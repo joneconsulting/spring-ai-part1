@@ -1,6 +1,7 @@
 package com.example.springai.services;
 
 import com.example.springai.model.Movie;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.converter.BeanOutputConverter;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 public class MovieServiceImpl implements MovieService {
     private final ChatClient chatClient;
 
@@ -52,21 +54,27 @@ public class MovieServiceImpl implements MovieService {
      * [S8-함정] 문자열로 JSON을 직접 요청하는 방식.
      * 모델이 ```json ... ``` 코드펜스로 감싸 반환하는 경우가 있어
      * 그대로 Jackson 파싱을 시도하면 깨집니다. → 응답 원문을 눈으로 확인하세요.
+     * compact(한 줄 압축)
      */
     public String askRawJsonTrap(String title) {
-        return chatClient.prompt()
+        String raw = chatClient.prompt()
                 .user(u -> u.text("영화 '{title}'의 정보를 title, year, director 필드를 가진 JSON으로 알려줘")
                         .param("title", title))
                 .call()
                 .content();
+
+        log.info("TRAP RAW >>>\n{}", raw);
+
+        return raw;
     }
 
     /**
      * [S8-대응①] 프롬프트에 마크다운 금지를 명시하는 방식.
      * (대응②는 애초에 entity()를 사용하는 것 — findMovie 메서드)
+     * pretty-print(사람이 읽기 좋은 여러 줄 형식)
      */
     public String askRawJsonFixed(String title) {
-        return chatClient.prompt()
+        String raw = chatClient.prompt()
                 .user(u -> u.text("""
                             영화 '{title}'의 정보를 title, year, director 필드를 가진 JSON으로 알려줘.
                             Respond in JSON format without markdown tags.
@@ -74,6 +82,10 @@ public class MovieServiceImpl implements MovieService {
                         .param("title", title))
                 .call()
                 .content();
+
+        log.info("FIXED RAW >>>\n{}", raw);
+
+        return raw;
     }
 
     /**
