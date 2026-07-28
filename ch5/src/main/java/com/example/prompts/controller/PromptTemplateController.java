@@ -21,13 +21,6 @@ public class PromptTemplateController {
 
     // ── S8. PromptTemplate ────────────────────────────────────
 
-    /** 슬라이드 코드 그대로 — 여행 전문가 · 번호 목록 3개 */
-    @GetMapping("/travel")
-    public Map<String, String> travel(
-            @RequestParam(defaultValue = "가을에 가기 좋은 국내 여행지를 추천해 주세요") String question) {
-        return Map.of("question", question, "answer", travelService.recommend(question));
-    }
-
     /** 대비용 — 문자열 연결(+) 방식 */
     @GetMapping("/travel/concat")
     public Map<String, String> travelConcat(
@@ -35,6 +28,13 @@ public class PromptTemplateController {
             @RequestParam(defaultValue = "번호 목록 3개") String format,
             @RequestParam(defaultValue = "가을에 가기 좋은 국내 여행지를 추천해 주세요") String question) {
         return Map.of("answer", travelService.recommendByConcat(role, format, question));
+    }
+
+    /** 슬라이드 코드 그대로 — 여행 전문가 · 번호 목록 3개 */
+    @GetMapping("/travel")
+    public Map<String, String> travel(
+            @RequestParam(defaultValue = "가을에 가기 좋은 국내 여행지를 추천해 주세요") String question) {
+        return Map.of("question", question, "answer", travelService.recommend(question));
     }
 
     /** 템플릿 재사용 — 역할·형식만 바꿔 다른 도메인에 적용 */

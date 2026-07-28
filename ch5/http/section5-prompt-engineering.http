@@ -30,11 +30,11 @@ GET http://localhost:8080/api/s05/system-prompt/out-of-policy
 
 ### ── S8. PromptTemplate — 변수 바인딩 ──────────────────────
 
-### 슬라이드 코드 그대로 (여행 전문가 · 번호 목록 3개)
-GET http://localhost:8080/api/s05/template/travel
-
 ### 대비용 — 문자열 연결(+) 방식
 GET http://localhost:8080/api/s05/template/travel/concat
+
+### 슬라이드 코드 그대로 (여행 전문가 · 번호 목록 3개)
+GET http://localhost:8080/api/s05/template/travel
 
 ### 템플릿 재사용 — 역할·형식만 교체
 GET http://localhost:8080/api/s05/template/travel/custom
