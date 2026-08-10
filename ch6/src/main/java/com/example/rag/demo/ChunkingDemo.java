@@ -32,13 +32,22 @@ public class ChunkingDemo {
         System.out.printf("원본 문서: %d건, 총 %,d자%n%n", source.size(), totalChars);
 
         for (int chunkSize : new int[]{200, 500, 1000}) {
-            TokenTextSplitter splitter = new TokenTextSplitter(
-                    chunkSize,  // defaultChunkSize (토큰)
-                    100,        // minChunkSizeChars
-                    5,          // minChunkLengthToEmbed
-                    10000,      // maxNumChunks
-                    true        // keepSeparator
-            );
+//            TokenTextSplitter splitter = new TokenTextSplitter(
+//                    chunkSize,  // defaultChunkSize (토큰)
+//                    100,        // minChunkSizeChars
+//                    5,          // minChunkLengthToEmbed
+//                    10000,      // maxNumChunks
+//                    true        // keepSeparator
+//            );
+
+            TokenTextSplitter splitter = TokenTextSplitter.builder()
+                    .withChunkSize(chunkSize)         // 기본 텍스트 분할 토큰 크기
+                    .withMinChunkSizeChars(100)             // 최소 문자(Char) 단위 크기
+                    .withMinChunkLengthToEmbed(5)           // 임베딩할 최소 길이
+                    .withMaxNumChunks(10000)                // 최대 생성 가능 Chunk 수
+                    .withKeepSeparator(true)               // 구분자(Separator) 유지 여부
+                    .build();
+
             List<Document> chunks = splitter.apply(source);
 
             double avgLen = chunks.stream().mapToInt(d -> d.getText().length()).average().orElse(0);

@@ -48,7 +48,15 @@ public class MiniRagDemo {
         reader.getCustomMetadata().put("source", "company-policy.txt");
         List<Document> docs = reader.get();
 
-        List<Document> chunks = new TokenTextSplitter(400, 100, 5, 10000, true).apply(docs);
+        TokenTextSplitter splitter = TokenTextSplitter.builder()
+                .withChunkSize(400)         // 기본 텍스트 분할 토큰 크기
+                .withMinChunkSizeChars(100)             // 최소 문자(Char) 단위 크기
+                .withMinChunkLengthToEmbed(5)           // 임베딩할 최소 길이
+                .withMaxNumChunks(10000)                // 최대 생성 가능 Chunk 수
+                .withKeepSeparator(true)               // 구분자(Separator) 유지 여부
+                .build();
+
+        List<Document> chunks = splitter.apply(docs);
         VectorStore vectorStore = SimpleVectorStore.builder(embeddingModel).build();
         vectorStore.add(chunks);
         System.out.printf("      원본 %d건 -> 청크 %d건 적재 완료%n%n", docs.size(), chunks.size());
