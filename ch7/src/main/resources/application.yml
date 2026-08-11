@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: section07-rag-pipeline
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ragdb
+    username: rag
+    password: ragpass
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        model: gpt-4o-mini
+        temperature: 0.2
+      embedding:
+        model: text-embedding-3-small
+    vectorstore:
+      pgvector:
+        initialize-schema: true          # 시작 시 vector 확장 / 테이블 자동 생성
+        dimensions: 1536                 # text-embedding-3-small 의 출력 차원과 반드시 일치
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+
+# 실습용 청킹 파라미터 (Section 8에서 이 값을 실험으로 조정한다)
+rag:
+  chunk-size: 500
+  top-k: 4
+
+logging:
+  level:
+    root: WARN
+    com.example.rag: INFO
