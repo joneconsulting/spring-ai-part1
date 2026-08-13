@@ -1,0 +1,38 @@
+
+spring:
+  application:
+    name: section10-tool-mcp
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        model: gpt-4o-mini
+        temperature: 0.2
+    # ---- MCP 클라이언트 설정 (교안 10장 7절) ----
+    # 아래는 파일시스템 MCP 서버 예시. Node.js(npx) 설치가 필요하다.
+    # 실습하지 않을 경우 mcp 블록 전체를 주석 처리하면 Tool Calling 파트만 동작한다.
+    mcp:
+      client:
+        enabled: ${MCP_ENABLED:false}
+        name: section10-mcp-client
+        stdio:
+          connections:
+            filesystem:
+              command: npx
+              args:
+                - "-y"
+                - "@modelcontextprotocol/server-filesystem"
+                - "${MCP_FS_PATH:/tmp/mcp-docs}"
+
+# 실습용 가짜 재고/주문 데이터 (교안 10장 3절 - DB 조회 Tool)
+demo:
+  # 데모 사용자 (SecurityContext 대체) - 이 사용자만 자신의 주문을 조회할 수 있다
+  current-user: "user-1024"
+
+logging:
+  level:
+    root: INFO
+    com.example.tool: DEBUG
+
+server:
+  port: 8088
