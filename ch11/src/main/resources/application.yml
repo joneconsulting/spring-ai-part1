@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: section11-multimodal
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        model: gpt-4o-mini        # Vision 지원 모델
+        temperature: 0.2
+      image:
+        model: gpt-image-1-mini
+      audio:
+        transcription:
+          model: whisper-1
+        speech:
+          model: tts-1
+          voice: alloy
+
+logging:
+  level:
+    root: WARN
+    com.example.multimodal: INFO
