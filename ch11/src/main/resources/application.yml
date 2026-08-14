@@ -17,10 +17,12 @@ spring:
         transcription:
           model: whisper-1
         speech:
-          model: tts-1
+          model: gpt-4o-mini-tts
           voice: alloy
 
 logging:
   level:
-    root: WARN
-    com.example.multimodal: INFO
+    root: INFO
+    org.springframework.ai: DEBUG
+    org.springframework.ai.openai: DEBUG
+    com.example.multimodal: DEBUG

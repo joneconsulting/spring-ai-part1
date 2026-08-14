@@ -1,5 +1,19 @@
 package com.example.multimodal.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.UUID;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.image.ImageModel;
@@ -25,14 +39,15 @@ public class ImageGenService {
         this.imageModel = imageModel;
     }
 
-    /** 프롬프트로 이미지를 생성하고 URL 또는 base64 데이터를 반환한다. */
+    /**
+     * 프롬프트로 이미지를 생성하고, base64 응답이면 파일로 저장한 뒤 파일 경로를 반환한다.
+     */
     public String generate(String prompt) {
         log.info("[Image] generate - prompt='{}'", prompt);
 
         ImageResponse res = imageModel.call(new ImagePrompt(prompt,
                 OpenAiImageOptions.builder()
                         .model("gpt-image-1-mini")
-                        .responseFormat("b64_json")
                         .size("1024x1024")
                         .build()));
 
@@ -40,16 +55,31 @@ public class ImageGenService {
             throw new IllegalStateException("Image generation failed. Check OpenAI image model access and request payload.");
         }
 
-        String url = res.getResult().getOutput().getUrl();
-        if (url == null || url.isBlank()) {
-            String base64 = res.getResult().getOutput().getB64Json();
-            if (base64 == null || base64.isBlank()) {
-                throw new IllegalStateException("Image generation response did not contain either URL or base64 data.");
-            }
-            url = "data:image/png;base64," + base64;
+        String imageUrl = res.getResult().getOutput().getUrl();
+        String base64 = res.getResult().getOutput().getB64Json();
+
+        if ((imageUrl == null || imageUrl.isBlank()) && (base64 == null || base64.isBlank())) {
+            throw new IllegalStateException("Image generation response did not contain either URL or base64 data.");
         }
 
-        log.info("[Image] 생성 완료: {}", url);
-        return url;
+        if (imageUrl == null || imageUrl.isBlank()) {
+            try {
+                String fileName = UUID.randomUUID() + ".png";
+                Path uploadDir = Paths.get("uploads");
+                Files.createDirectories(uploadDir);
+
+                byte[] imageBytes = Base64.getDecoder().decode(base64);
+                Path target = uploadDir.resolve(fileName);
+                Files.write(target, imageBytes);
+
+                imageUrl = "/images/" + fileName;
+                log.info("[Image] base64 -> file saved: {}", target);
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to save generated image to file.", e);
+            }
+        }
+
+        log.info("[Image] 생성 완료: {}", imageUrl);
+        return imageUrl;
     }
 }
