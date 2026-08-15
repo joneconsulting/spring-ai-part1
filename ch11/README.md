@@ -10,6 +10,7 @@ export OPENAI_API_KEY=sk-...
 ./gradlew bootRun
 ```
 > DB 불필요. 단, 모델 접근 권한이 필요합니다 (Vision·DALL·E·Whisper·TTS).
+>> https://platform.openai.com/
 
 ---
 
