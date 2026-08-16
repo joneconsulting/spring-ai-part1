@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: section13-dify-integration
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.2
+
+dify:
+  base-url: ${DIFY_BASE_URL:https://api.dify.ai/v1}
+  api-key: ${DIFY_API_KEY:}
+  # 키가 없거나 Dify 장애 시 Spring AI 로 폴백 (교안 13장 5절)
+  mock-when-no-key: true
+  timeout-seconds: 60
+
+logging:
+  level:
+    root: WARN
+    com.example.dify: INFO
