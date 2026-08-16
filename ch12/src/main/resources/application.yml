@@ -5,9 +5,8 @@ spring:
     openai:
       api-key: ${OPENAI_API_KEY}
       chat:
-        options:
-          model: gpt-4o-mini
-          temperature: 0.2
+        model: gpt-4o-mini
+        temperature: 0.2
 
 # ---- Dify 연동 설정 (교안 12장) ----
 dify:

@@ -10,7 +10,7 @@ export OPENAI_API_KEY=sk-...
 ./gradlew bootRun
 ```
 
-### Dify 실습 (교안 12장 4절 — UI에서 10분)
+### Dify 실습 (교안 10장 4절 — UI에서 10분)
 1. Dify Cloud 가입 또는 Self-hosted 기동
 2. Knowledge 생성 → 문서 업로드 → 인덱싱
 3. Chatbot 앱 생성 → Knowledge 연결 → 게시
@@ -55,7 +55,7 @@ curl "localhost:8080/api/compare?q=연차는 며칠인가요"
 
 ---
 
-## 비교 실험 설계 (교안 12장 4절)
+## 비교 실험 설계 (교안 10장 4절)
 
 | 비교 축 | 측정 방법 |
 |---|---|
