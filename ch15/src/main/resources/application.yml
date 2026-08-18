@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: section15-mini-project
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ragdb
+    username: rag
+    password: ragpass
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.2
+      embedding:
+        options:
+          model: text-embedding-3-small
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+
+# 통합 어시스턴트 설정
+assistant:
+  rag:
+    top-k: 4
+  dify:
+    base-url: ${DIFY_BASE_URL:https://api.dify.ai/v1}
+    api-key: ${DIFY_API_KEY:}
+    mock-when-no-key: true
+  guardrail:
+    injection-patterns: 이전 지시 무시,이전 지시를 무시,ignore the above,system prompt,시스템 프롬프트,jailbreak
+
+logging:
+  level:
+    root: WARN
+    com.example.assistant: INFO
