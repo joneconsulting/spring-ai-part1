@@ -105,7 +105,7 @@ public class GuardrailAdvisor implements CallAdvisor {
 
     @Override
     public int getOrder() {
-        return -1000;   // 최상단 — 방어가 가장 먼저 동작해야 한다 (교안 15장 2절)
+        return -1000;   // 최상단 — 방어가 가장 먼저 동작해야 한다 (교안 10장 2절)
     }
 
     /**
