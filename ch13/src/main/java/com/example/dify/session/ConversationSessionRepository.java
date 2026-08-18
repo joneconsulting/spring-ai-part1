@@ -7,12 +7,12 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * conversation_id 관리 (교안 13장 3절) ★
+ * conversation_id 관리★
  *
  * Dify 의 대화 상태(conversation_id)를 우리 시스템의 사용자와 매핑한다.
  *
  * ※ 데모는 인메모리(ConcurrentHashMap)로 구현한다.
- *   교안 13장 3절의 지적대로, 실무에서는 인스턴스 스케일아웃에 대비해
+ *   실무에서는 인스턴스 스케일아웃에 대비해
  *   DB 또는 Redis 등 공유 저장소를 써야 한다.
  */
 @Repository
@@ -33,7 +33,7 @@ public class ConversationSessionRepository {
         }
     }
 
-    /** "새 대화 시작" — 저장된 대화 ID 삭제 (교안 13장 3절) */
+    /** "새 대화 시작" — 저장된 대화 ID 삭제 */
     public void reset(String userId) {
         store.remove(userId);
     }

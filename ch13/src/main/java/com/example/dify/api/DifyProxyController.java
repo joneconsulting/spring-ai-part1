@@ -14,7 +14,7 @@ import java.util.Map;
  *  GET  /api/dify/chat/stream     SSE 스트리밍 프록시 ★
  *  POST /api/dify/reset           새 대화 시작
  *
- * 교안 13장 1절: 프론트가 Dify 를 직접 부르면 안 된다.
+ * 교안 5장: 프론트가 Dify 를 직접 부르면 안 된다.
  *              Spring 이 인증·비용통제·로깅·폴백을 담당한다.
  */
 @RestController
@@ -38,7 +38,7 @@ public class DifyProxyController {
                 "fellBack", result.fellBack());
     }
 
-    /** SSE 스트리밍 프록시 (교안 13장 4절) */
+    /** SSE 스트리밍 프록시 (교안 10장 STEP 3) */
     @GetMapping(value = "/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> chatStream(@RequestParam String userId,
                                    @RequestParam String message) {

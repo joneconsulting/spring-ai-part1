@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 /**
- * Dify 채팅 서비스 — conversation_id 재사용을 캡슐화 (교안 13장 3절)
+ * Dify 채팅 서비스 — conversation_id 재사용을 캡슐화 (교안 10장 STEP 2)
  *
  * ★ 핵심: 우리 DB(여기서는 인메모리)에서 진행 중인 대화 ID 를 조회해 보내고,
  *   응답으로 받은 conversation_id 를 반드시 저장한다.

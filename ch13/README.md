@@ -33,7 +33,7 @@ curl -X POST localhost:8080/api/dify/chat \
   -H 'Content-Type: application/json' \
   -d '{"userId":"user-1","message":"그럼 언제까지 써야 하나요?"}'
 ```
-**응답의 `conversationId`가 두 요청에서 동일하게 유지**되면 성공입니다 (교안 13장 3절).
+**응답의 `conversationId`가 두 요청에서 동일하게 유지**되면 성공입니다 (교안 10장 STEP 2).
 
 ### 2) 새 대화 시작
 ```bash
@@ -41,14 +41,19 @@ curl -X POST "localhost:8080/api/dify/reset?userId=user-1"
 # 이후 질문은 새 conversation_id 로 시작
 ```
 
-### 3) SSE 스트리밍 프록시 ⭐ (교안 13장 4절)
+### 3) SSE 스트리밍 프록시 ⭐ (교안 10장 STEP 3)
 ```bash
 curl -N "localhost:8080/api/dify/chat/stream?userId=user-1&message=연차 규정 설명해줘"
+
+(오류 발생 시)
+curl -N -G "http://localhost:8080/api/dify/chat/stream" \
+  --data-urlencode "userId=user-1" \
+  --data-urlencode "message=연차 규정 설명해줘"
 ```
 > `-N` 옵션으로 버퍼링 없이 토큰이 조각으로 도착하는 것을 확인합니다.
 > mock 모드에서는 예시 조각들이 스트리밍됩니다.
 
-### 4) 폴백 동작 검증 (교안 13장 6절 STEP 4)
+### 4) 폴백 동작 검증 (교안 10장 STEP 4)
 ```bash
 # 일부러 잘못된 키로 기동
 DIFY_API_KEY=wrong-key ./gradlew bootRun
@@ -61,7 +66,7 @@ curl -X POST localhost:8080/api/dify/chat \
 
 ---
 
-## 아키텍처 (교안 13장 1절)
+## 아키텍처 (교안 10장)
 
 ```
 브라우저 ──→ Spring Boot ──→ Dify API
@@ -84,9 +89,9 @@ curl -X POST localhost:8080/api/dify/chat \
 ## 실습 과제
 
 1. **세션 저장소를 DB로**: `ConversationSessionRepository`를 JPA 또는 Redis로 교체
-   (교안 13장 3절 — 인스턴스 스케일아웃 대비)
+   (교안 10장 — 인스턴스 스케일아웃 대비)
 2. **SSE 이벤트 파싱**: `DifyProxyClient.extractAnswerChunk()`를 실제 Dify SSE 포맷에 맞게 구현
-   (교안 13장 4절 함정 1 — message 외 타입 필터링)
+   (교안 10장 함정 1 — message 외 타입 필터링장
 3. **쿼터 추가**: 사용자별 일일 호출 한도를 Spring 계층에 추가 (비용 통제)
 
 ## 주요 파일

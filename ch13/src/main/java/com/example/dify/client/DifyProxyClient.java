@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Dify 프록시 클라이언트 (교안 13장 2·4·5절)
+ * Dify 프록시 클라이언트 (교안 10장)
  *
- * 왜 Spring 이 중간에 있는가 (교안 13장 1절):
+ * 왜 Spring 이 중간에 있는가 (교안 5장):
  *   - API 키를 서버에만 보관 (프론트 노출 방지)
  *   - 인증·비용통제·로깅·폴백을 Spring 이 담당
  *
@@ -64,7 +64,7 @@ public class DifyProxyClient {
         return (apiKey == null || apiKey.isBlank()) && mockWhenNoKey;
     }
 
-    /** blocking 호출 — 교안 13장 3절 (conversation_id 왕복) */
+    /** blocking 호출 — 교안 10장 STEP 2 (conversation_id 왕복) */
     @SuppressWarnings("unchecked")
     public DifyReply chat(String query, String user, String conversationId) {
         if (isMockMode()) {
@@ -82,15 +82,20 @@ public class DifyProxyClient {
             String convId = res == null ? "" : String.valueOf(res.getOrDefault("conversation_id", ""));
             return new DifyReply(answer, convId, false, false);
 
+//            DifyResponse res = restClient.post()
+//                    .uri("/v1/chat-messages")
+//                    .body(new DifyRequest(question, userId, convId, "blocking"))
+//                    .retrieve().body(DifyResponse.class);
+
         } catch (Exception e) {
-            // 교안 13장 5절 — Dify 장애 시 Spring AI 로 폴백
+            // 교안 10장 STEP 4 — Dify 장애 시 Spring AI 로 폴백
             log.warn("[Dify] 호출 실패, Spring AI 로 폴백합니다: {}", e.getMessage());
             String answer = fallbackClient.prompt().user(query).call().content();
             return new DifyReply(answer, conversationId == null ? "" : conversationId, false, true);
         }
     }
 
-    /** streaming 호출 — 교안 13장 4절 (SSE 프록시) */
+    /** streaming 호출 — 교안 10장 STEP 4 (SSE 프록시) */
     public Flux<String> chatStream(String query, String user, String conversationId) {
         if (isMockMode()) {
             return Flux.just("[MOCK] ", "스트리밍 ", "응답 ", "예시입니다. ",
@@ -103,7 +108,7 @@ public class DifyProxyClient {
                 .bodyValue(body)
                 .retrieve()
                 .bodyToFlux(String.class)          // Dify SSE 수신
-                .map(this::extractAnswerChunk)     // 필요한 조각만 추출 (교안 13장 4절 함정 1)
+                .map(this::extractAnswerChunk)     // 필요한 조각만 추출 (교안 10장 STEP 4 함정 1)
                 .doOnNext(chunk -> log.debug("[Dify SSE] {}", chunk))   // 로깅 (마스킹 지점)
                 .timeout(Duration.ofSeconds(timeoutSeconds))
                 .onErrorResume(e -> {              // 폴백
@@ -112,7 +117,7 @@ public class DifyProxyClient {
                 });
     }
 
-    // Dify SSE 이벤트에는 message 외 타입도 섞여 온다 (교안 13장 4절 함정 1)
+    // Dify SSE 이벤트에는 message 외 타입도 섞여 온다 (교안 10장 STEP 4 함정 1)
     // 실제 구현에서는 JSON 파싱 후 event=="message" 인 것의 answer 필드만 추출한다.
     private String extractAnswerChunk(String raw) {
         // 데모용 단순 추출 — GA 에서는 ObjectMapper 로 파싱
