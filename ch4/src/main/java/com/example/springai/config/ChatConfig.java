@@ -7,6 +7,9 @@ import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * S13 - ChatMemory와 ChatClient 등록
+ */
 @Configuration
 public class ChatConfig {
 

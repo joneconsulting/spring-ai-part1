@@ -21,7 +21,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     /**
-     * [S6] entity() — 한 줄 타입 매핑.
+     * [S8] entity() — 한 줄 타입 매핑.
      * record를 넘기면 스키마 지시문 삽입 + JSON 파싱까지 자동입니다.
      */
     public Movie findMovie(String title) {
@@ -33,7 +33,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     /**
-     * [S7] 컬렉션 매핑 — 제네릭은 Type Erasure 때문에
+     * [S9] 컬렉션 매핑 — 제네릭은 Type Erasure 때문에
      * ParameterizedTypeReference로 타입 정보를 보존해 전달합니다.
      * (RestClient에서 이미 쓰던 패턴 그대로)
      */
@@ -51,7 +51,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     /**
-     * [S8-함정] 문자열로 JSON을 직접 요청하는 방식.
+     * [S10-함정] 문자열로 JSON을 직접 요청하는 방식.
      * 모델이 ```json ... ``` 코드펜스로 감싸 반환하는 경우가 있어
      * 그대로 Jackson 파싱을 시도하면 깨집니다. → 응답 원문을 눈으로 확인하세요.
      * compact(한 줄 압축)
@@ -69,7 +69,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     /**
-     * [S8-대응①] 프롬프트에 마크다운 금지를 명시하는 방식.
+     * [S10-대응①] 프롬프트에 마크다운 금지를 명시하는 방식.
      * (대응②는 애초에 entity()를 사용하는 것 — findMovie 메서드)
      * pretty-print(사람이 읽기 좋은 여러 줄 형식)
      */
@@ -89,7 +89,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     /**
-     * [S6 강의 노트용] entity()가 프롬프트 뒤에 자동으로 붙이는
+     * [S10 강의 노트용] entity()가 프롬프트 뒤에 자동으로 붙이는
      * 포맷 지시문(JSON 스키마)을 문자열로 반환합니다.
      * "마법이 아니라 자동화"임을 보여줄 때 사용하세요.
      */
