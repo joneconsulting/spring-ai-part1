@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: spring-ai-part1
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+
+      chat:
+        model: gpt-4o-mini
+        temperature: 1.2
+        max-tokens: 500
