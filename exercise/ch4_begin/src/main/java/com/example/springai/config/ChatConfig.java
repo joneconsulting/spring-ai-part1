@@ -12,11 +12,11 @@ public class ChatConfig {
 
     @Bean
     public ChatMemory chatMemory() {
-
+        return null;
     }
 
     @Bean
     public ChatClient memoryChatClient(ChatClient.Builder builder, ChatMemory chatMemory) {
-
+        return null;
     }
 }

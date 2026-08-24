@@ -18,13 +18,13 @@ public class MemoryChatController {
     @PostMapping("/{conversationId}")
     public String chat(@PathVariable String conversationId,
                        @RequestBody String message) {
-
+        return null;
     }
 
     @GetMapping(value = "/{conversationId}/stream",
             produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> stream(@PathVariable String conversationId,
                                @RequestParam String message) {
-
+        return null;
     }
 }

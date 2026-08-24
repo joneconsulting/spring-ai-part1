@@ -16,10 +16,10 @@ public class MemoryChatService {
     }
 
     public String chat(String conversationId, String message) {
-
+        return null;
     }
 
     public Flux<String> chatStream(String conversationId, String message) {
-
+        return null;
     }
 }

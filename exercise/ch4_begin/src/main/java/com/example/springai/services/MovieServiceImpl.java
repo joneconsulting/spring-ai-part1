@@ -17,19 +17,19 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public Movie findMovie(String title) {
-
+        return null;
     }
 
     public List<Movie> findMoviesByDirector(String director, int count) {
-
+        return null;
     }
 
     public String askRawJsonTrap(String title) {
-
+        return null;
     }
 
     public String askRawJsonFixed(String title) {
-
+        return null;
     }
 
     /**
