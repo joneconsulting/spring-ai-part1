@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: spring-ai-prompts
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        model: gpt-4o-mini
+        # 실습 지침: "temperature는 0.3 고정 권장"
+        # 프롬프트 차이만 관찰하기 위해 무작위성을 낮춘다 (Section 3 학습의 응용)
+        temperature: 0.3
+
+logging:
+  level:
+    com.example.prompts: DEBUG
