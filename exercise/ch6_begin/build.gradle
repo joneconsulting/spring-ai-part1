@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    // Spring AI BOM
+    implementation platform('org.springframework.ai:spring-ai-bom:2.0.0')
+
+    // Spring AI OpenAI - Chat / Embedding
+    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+
+    // Spring AI Vector Store API / SimpleVectorStore
+    implementation 'org.springframework.ai:spring-ai-vector-store'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

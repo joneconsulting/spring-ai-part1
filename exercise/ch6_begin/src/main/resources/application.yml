@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: section06-rag-basics
+  main:
+    web-application-type: none      # CLI 데모 전용
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.2
+      embedding:
+        options:
+          model: text-embedding-3-small
+
+logging:
+  level:
+    root: WARN
+    com.example.rag: INFO
