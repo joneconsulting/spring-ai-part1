@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring AI BOM
+    implementation platform('org.springframework.ai:spring-ai-bom:2.0.0')
+
+    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+
+    // Spring AI Vector Store API / SimpleVectorStore
+    implementation 'org.springframework.ai:spring-ai-vector-store'
+    implementation 'org.springframework.ai:spring-ai-starter-vector-store-pgvector'
+    implementation 'org.springframework.ai:spring-ai-vector-store-advisor'
+
+    implementation 'org.springframework.ai:spring-ai-pdf-document-reader'
+
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// 평가 테스트는 LLM 호출 비용이 발생하므로 기본 실행에서 제외한다.
+//   ./gradlew test           -> 평가 테스트 제외
+//   ./gradlew test -Peval    -> 평가 테스트 포함
+tasks.named('test') {
+    useJUnitPlatform {
+        if (!project.hasProperty('eval')) {
+            excludeTags 'eval'
+        }
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        exceptionFormat = "full"
+    }
+}

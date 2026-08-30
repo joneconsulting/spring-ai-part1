@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: section08-rag-tuning
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ragdb
+    username: rag
+    password: ragpass
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        model: gpt-4o-mini
+        temperature: 0.2
+      embedding:
+        model: text-embedding-3-small
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+
+rag:
+  # 청킹 실험 대상 크기 (교안 8장 2절)
+  chunk-sizes: 200,500,1000
+  # 현재 운영 설정 (Before/After 실험의 기준선)
+  active-chunk-size: 500
+  top-k: 4
+  similarity-threshold: 0.0
+
+logging:
+  level:
+    root: WARN
+    com.example.rag: INFO

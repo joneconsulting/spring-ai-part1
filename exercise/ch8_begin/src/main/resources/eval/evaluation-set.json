@@ -1,0 +1,23 @@
+{
+  "description": "Section 8 실습용 평가 세트 - 일반 9 / 경계 3 / 함정 3 (교안 8장 8절)",
+  "document": "company-policy.txt",
+  "questions": [
+    { "id": "G01", "type": "general", "question": "연차 유급휴가는 며칠인가요?",              "expectedSource": "제12조", "answerable": true },
+    { "id": "G02", "type": "general", "question": "재택근무는 주 며칠까지 할 수 있나요?",       "expectedSource": "제5조",  "answerable": true },
+    { "id": "G03", "type": "general", "question": "급여는 언제 지급되나요?",                  "expectedSource": "제20조", "answerable": true },
+    { "id": "G04", "type": "general", "question": "교육비는 얼마까지 지원되나요?",             "expectedSource": "제21조", "answerable": true },
+    { "id": "G05", "type": "general", "question": "본인 결혼 시 경조휴가는 며칠인가요?",        "expectedSource": "제13조", "answerable": true },
+    { "id": "G06", "type": "general", "question": "병가는 연간 며칠까지 쓸 수 있나요?",         "expectedSource": "제14조", "answerable": true },
+    { "id": "G07", "type": "general", "question": "코어타임은 몇 시부터 몇 시까지인가요?",      "expectedSource": "제4조",  "answerable": true },
+    { "id": "G08", "type": "general", "question": "노트북 등 장비 교체 주기는 어떻게 되나요?",  "expectedSource": "제23조", "answerable": true },
+    { "id": "G09", "type": "general", "question": "외부 생성형 AI에 소스코드를 입력해도 되나요?", "expectedSource": "제31조", "answerable": true },
+
+    { "id": "B01", "type": "boundary", "question": "휴가 내려면 언제까지 신청하고 누구 승인을 받아야 하나요?", "expectedSource": "제12조", "answerable": true },
+    { "id": "B02", "type": "boundary", "question": "입사한 지 한 달 됐는데 집에서 일해도 되나요?",           "expectedSource": "제5조",  "answerable": true },
+    { "id": "B03", "type": "boundary", "question": "일주일 넘게 아파서 쉬면 월급은 얼마나 나오나요?",         "expectedSource": "제14조", "answerable": true },
+
+    { "id": "T01", "type": "trap", "question": "회사 주차장은 몇 대까지 수용할 수 있나요?",  "expectedSource": null, "answerable": false },
+    { "id": "T02", "type": "trap", "question": "구내식당 점심 메뉴는 어떻게 되나요?",       "expectedSource": null, "answerable": false },
+    { "id": "T03", "type": "trap", "question": "해외 주재원 파견 수당은 얼마인가요?",       "expectedSource": null, "answerable": false }
+  ]
+}
