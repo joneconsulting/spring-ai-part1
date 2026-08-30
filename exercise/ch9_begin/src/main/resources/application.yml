@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: section09-ai-expert
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ragdb
+    username: rag
+    password: ragpass
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        model: gpt-4o-mini
+        temperature: 0.1        # 판단 시스템은 낮게 - 재현성 확보
+      embedding:
+        model: text-embedding-3-small
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+
+expert:
+  top-k: 6                    # 판단에는 비교 대상이 여러 개 필요 (Q&A보다 많이)
+  # HITL 라우팅 임계값 (교안 9장 6절)
+  auto-approve-score: 80      # 이상이면 자동 진행
+  review-required-score: 50   # 미만이면 판단 보류
+
+logging:
+  level:
+    root: WARN
+    com.example.expert: INFO
