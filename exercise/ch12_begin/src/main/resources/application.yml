@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: section12-dify
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        model: gpt-4o-mini
+        temperature: 0.2
+
+# ---- Dify 연동 설정 (교안 12장) ----
+dify:
+  # Dify Cloud 또는 Self-hosted 의 API 베이스 URL
+  base-url: ${DIFY_BASE_URL:https://api.dify.ai/v1}
+  # 앱 게시 후 발급받은 API 키 (교안 12장 4절 STEP 4)
+  api-key: ${DIFY_API_KEY:}
+  # 키가 없으면 mock 응답을 반환한다 (Dify 미가동 환경에서도 실습 흐름 확인 가능)
+  mock-when-no-key: true
+
+logging:
+  level:
+    root: WARN
+    com.example.dify: INFO
