@@ -31,10 +31,10 @@ public class OrderTools {
     // 데모용 주문 데이터: userId -> 주문 목록
     private static final Map<String, List<Order>> ORDER_DB = Map.of(
             "user-1024", List.of(
-                    new Order("ORD-5501", "블루투스 키보드", "배송완료", "정*수"),
-                    new Order("ORD-5588", "USB-C 허브", "배송중", "정*수")),
+                    new Order("ORD-5501", "블루투스 키보드", "배송완료", "정*은"),
+                    new Order("ORD-5588", "USB-C 허브", "배송중", "정*은")),
             "user-2048", List.of(
-                    new Order("ORD-7701", "노트북 거치대", "결제완료", "김*희"))
+                    new Order("ORD-7701", "노트북 거치대", "결제완료", "손*지"))
     );
 
     public OrderTools(@Value("${demo.current-user}") String currentUser) {

@@ -44,7 +44,7 @@ class RagQualityTest {
                 new EvaluationRequest(question, result.evidences(), result.answer());
         EvaluationResponse res = evaluator.evaluate(req);                // (4) LLM 판정
 
-        assertThat(res.isPass()).isTrue();                               // (5) 단언
+        assertThat(res.isPass()).isTrue();                               // (5) 판정
     }
 
     @Test

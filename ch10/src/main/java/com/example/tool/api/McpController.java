@@ -1,6 +1,7 @@
 package com.example.tool.api;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,12 @@ public class McpController {
                     "note", "MCP 도구를 찾을 수 없습니다. MCP_ENABLED=true 와 Node.js(npx) 가 "
                             + "설치되어 있는지, README 의 'Part 2 — MCP' 절차를 따랐는지 확인하세요."
             );
+        } else {
+            ToolCallback[] toolBacks = mcpTools.getToolCallbacks();
+            for (ToolCallback tcb : toolBacks) {
+                System.out.println("==============");
+                System.out.println("[Name] " + tcb.getToolDefinition().name() + "/" + tcb.getToolMetadata());
+            }
         }
 
         ChatClient chatClient = builder.clone()

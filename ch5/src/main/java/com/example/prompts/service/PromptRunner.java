@@ -48,6 +48,9 @@ public class PromptRunner {
         return new Result(text(response), totalTokens(response));
     }
 
+    /*
+     * ChatReponse는 텍스트 외에 토큰사용량, 정상종료 여부, 메타데이터 등의 정보도 표시
+     */
     private String text(ChatResponse response) {
         var usage = response.getMetadata().getUsage();
         log.debug("model={} tokens(prompt/completion/total)={}/{}/{}",

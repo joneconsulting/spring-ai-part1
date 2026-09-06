@@ -86,7 +86,7 @@ public class GuardrailAdvisor implements CallAdvisor {
             return refusal(req, "답변을 제공할 수 없습니다. (민감정보 포함)");
         }
 
-        // SYstem Prompt Leak 검사
+        // System Prompt Leak 검사
         if (leakDetector.leaks(answer)) {
             metrics.counter("guardrail.blocked", "stage", "output-leak").increment();
 

@@ -35,4 +35,4 @@ logging:
     com.example.tool: DEBUG
 
 server:
-  port: 8088
+  port: 8080
