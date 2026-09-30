@@ -12,11 +12,15 @@ public class ChatConfig {
 
     @Bean
     public ChatMemory chatMemory() {
-        return null;
+        return MessageWindowChatMemory.builder()
+                .maxMessages(10)    // 최근 10개 메시지만 유지
+                .build();
     }
 
     @Bean
     public ChatClient memoryChatClient(ChatClient.Builder builder, ChatMemory chatMemory) {
-        return null;
+        return builder
+                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+                .build();
     }
 }

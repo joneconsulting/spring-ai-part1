@@ -16,10 +16,19 @@ public class MemoryChatService {
     }
 
     public String chat(String conversationId, String message) {
-        return null;
+        return chatClient.prompt()
+                .user(message)
+                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .call()
+                .content();
     }
 
+    /* 대화기억 + 스트리밍 처리 */
     public Flux<String> chatStream(String conversationId, String message) {
-        return null;
+        return chatClient.prompt()
+                .user(message)
+                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .stream()
+                .content();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.springai.controllers;
 
+import com.example.springai.model.Movie;
 import com.example.springai.services.MovieService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,23 +20,23 @@ public class MovieController {
 
     @GetMapping("/one")
     public Movie one(@RequestParam(defaultValue = "기생충") String title) {
-        return null;
+        return movieService.findMovie(title);
     }
 
     @GetMapping("/by-director")
     public List<Movie> byDirector(@RequestParam(defaultValue = "봉준호") String director,
                                   @RequestParam(defaultValue = "3") int count) {
-        return null;
+        return movieService.findMoviesByDirector(director, count);
     }
 
     @GetMapping("/raw-json-trap")
     public String rawJsonTrap(@RequestParam(defaultValue = "기생충") String title) {
-        return null;
+        return movieService.askRawJsonTrap(title);
     }
 
     @GetMapping("/raw-json-fixed")
     public String rawJsonFixed(@RequestParam(defaultValue = "기생충") String title) {
-        return null;
+        return movieService.askRawJsonFixed(title);
     }
 
     /** [S8~S10 노트] entity()가 자동 주입하는 포맷 지시문(JSON 스키마) 확인 */
