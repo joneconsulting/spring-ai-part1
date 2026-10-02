@@ -1,6 +1,9 @@
 package com.example.springai.services;
 
+import com.example.springai.jev.JevClient;
+import com.example.springai.model.Genre;
 import com.example.springai.model.Movie;
+import com.example.springai.model.ReviewAnalysis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
@@ -9,15 +12,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
 public class MovieServiceImpl implements MovieService {
     private final ChatClient chatClient;
+    private final JevClient jevClient;
 
-    public MovieServiceImpl(ChatClient.Builder builder) {
+    public MovieServiceImpl(ChatClient.Builder builder, JevClient jevClient) {
         this.chatClient = builder.build();
+        this.jevClient = jevClient;
     }
 
     /**
@@ -95,5 +102,51 @@ public class MovieServiceImpl implements MovieService {
      */
     public String describeFormat() {
         return new BeanOutputConverter<>(Movie.class).getFormat();
+    }
+
+    /**
+     * [S10-대응②와 비교] LLM + entity() — 스키마를 "부탁"하는 방식.
+     * 대부분 잘 되지만 enum에 없는 값이 오면 파싱 예외가 날 수 있습니다.
+     */
+    public ReviewAnalysis analyzeReviewWithLlm(String review) {
+        return chatClient.prompt()
+                .user(u -> u.text("""
+                    다음 영화 리뷰를 분석해줘.
+                    sentiment는 0(매우 부정)~4(매우 긍정), confidence는 null로 둬.
+                    리뷰: {review}
+                    """).param("review", review))
+                .call()
+                .entity(ReviewAnalysis.class);
+    }
+
+    /**
+     * [S10-대응③] Jev — 보기 중에서만 고르므로 형식 오류가 구조적으로 불가능.
+     * criteria를 enum에서 만들기 때문에 응답은 항상 Genre.valueOf()로 변환됩니다.
+     */
+    public ReviewAnalysis analyzeReviewWithJev(String review) {
+        Map<String, String> genreCriteria = new LinkedHashMap<>();
+        for (Genre g : Genre.values()) {
+            genreCriteria.put(g.name(), g.description());
+        }
+
+        Map<String, JevClient.Decision> answers = jevClient.decide(review, Map.of(
+                "genre", Map.of(
+                        "type", "choice",
+                        "instructions", "리뷰가 다루는 영화의 장르는?",
+                        "criteria", genreCriteria),
+                "sentiment", Map.of(
+                        "type", "score",
+                        "instructions", "리뷰 작성자의 영화 평가는?",
+                        "criteria", List.of("매우 부정", "부정", "보통", "긍정", "매우 긍정")),
+                "spoiler", Map.of(
+                        "type", "noul",
+                        "instructions", "리뷰가 결말이나 반전을 드러내는가?")));
+
+        JevClient.Decision genre = answers.get("genre");
+        return new ReviewAnalysis(
+                Genre.valueOf(genre.choice()),
+                answers.get("sentiment").score(),
+                answers.get("spoiler").noul() >= 0.5,
+                genre.confidence());
     }
 }

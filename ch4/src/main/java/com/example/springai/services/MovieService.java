@@ -1,6 +1,7 @@
 package com.example.springai.services;
 
 import com.example.springai.model.Movie;
+import com.example.springai.model.ReviewAnalysis;
 
 import java.util.List;
 
@@ -15,4 +16,8 @@ public interface MovieService {
     String askRawJsonFixed(String title);
 
     String describeFormat();
+
+    ReviewAnalysis analyzeReviewWithLlm(String review);
+
+    ReviewAnalysis analyzeReviewWithJev(String review);
 }

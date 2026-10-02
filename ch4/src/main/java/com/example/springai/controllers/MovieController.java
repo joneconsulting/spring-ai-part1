@@ -1,14 +1,15 @@
 package com.example.springai.controllers;
 
+import com.example.springai.jev.JevClient;
 import com.example.springai.model.Movie;
+import com.example.springai.model.ReviewAnalysis;
 import com.example.springai.services.MovieService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,9 +17,11 @@ import java.util.List;
 @RequestMapping("/api/movies")
 public class MovieController {
     private final MovieService movieService;
+    private final JevClient jevClient;
 
-    public MovieController(MovieService movieService) {
+    public MovieController(MovieService movieService, JevClient jevClient) {
         this.movieService = movieService;
+        this.jevClient = jevClient;
     }
 
     /** [S8] entity() 단건 매핑. 예) GET /api/movies/one?title=기생충 */
@@ -52,5 +55,19 @@ public class MovieController {
         return movieService.describeFormat();
     }
 
+    /** [S10-비교] 같은 리뷰를 LLM entity()로 분석. 예) POST /api/movies/review/llm */
+    @PostMapping("/review/llm")
+    public ReviewAnalysis reviewLlm(@RequestBody String review) {
+        return movieService.analyzeReviewWithLlm(review);
+    }
+
+    /** [S10-비교] 같은 리뷰를 Jev로 분석. jev.enabled=false면 503 */
+    @PostMapping("/review/jev")
+    public ReviewAnalysis reviewJev(@RequestBody String review) {
+        if (!jevClient.enabled()) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "jev.enabled=false");
+        }
+        return movieService.analyzeReviewWithJev(review);
+    }
 }
 

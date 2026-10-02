@@ -9,3 +9,9 @@ spring:
         model: gpt-4o-mini
         temperature: 1.2
         max-tokens: 500
+
+jev:
+  enabled: ${JEV_ENABLED:false}        # 기본 off → 키 없는 수강생도 기존 실습 그대로 진행
+  api-key: ${TYPESAFE_API_KEY:}
+  base-url: https://api.typesafe.ai
+  model: jev-1.13.0                    # 녹화 시점 버전 고정
